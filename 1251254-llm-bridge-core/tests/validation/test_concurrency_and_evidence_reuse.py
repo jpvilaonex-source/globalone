@@ -48,3 +48,49 @@ def test_concurrent_single_step_attempts_cannot_both_advance():
     assert e.get_current_gate() == "G1"
     assert sum(x[0] == "ok" for x in outcomes) == 1
     assert sum(x[0] == "blocked" for x in outcomes) == 7
+
+
+def test_audit_store_rejects_replay_and_preserves_hash_chain():
+    from src.core.persistence_controls import AppendOnlyAuditStore, PersistenceControlError
+    import hashlib
+    import json
+
+    store = AppendOnlyAuditStore()
+
+    def event_hash(previous, payload):
+        raw = json.dumps(
+            {"previousHash": previous, "payload": payload},
+            ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+        ).encode()
+        return hashlib.sha256(raw).hexdigest()
+
+    first = {"action": "G1"}
+    h1 = event_hash("GENESIS", first)
+    store.append("IDEM-1", first, h1)
+
+    with pytest.raises(PersistenceControlError):
+        store.append("IDEM-1", first, h1)
+
+    second = {"action": "G2"}
+    h2 = event_hash(h1, second)
+    store.append("IDEM-2", second, h2)
+
+    assert store.verify_chain() is True
+    assert len(store.snapshot()) == 2
+
+
+def test_audit_store_rejects_tampered_event_hash():
+    from src.core.persistence_controls import AppendOnlyAuditStore, PersistenceControlError
+    import hashlib
+    import json
+
+    store = AppendOnlyAuditStore()
+    payload = {"action": "G1"}
+    raw = json.dumps(
+        {"previousHash": "GENESIS", "payload": payload},
+        ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+    ).encode()
+    valid = hashlib.sha256(raw).hexdigest()
+
+    with pytest.raises(PersistenceControlError):
+        store.append("IDEM-TAMPER", payload, "0" * len(valid))
