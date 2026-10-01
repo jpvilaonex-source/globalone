@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "1251254-EvidenceManifest",
+  "type": "object",
+  "properties": {
+    "masterReference": {
+      "type": "string",
+      "const": "1251254"
+    },
+    "manifestId": {
+      "type": "string"
+    },
+    "issuer": {
+      "type": "string"
+    },
+    "issuanceTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidenceType": {
+      "type": "string"
+    },
+    "cryptographicPayload": {
+      "type": "object",
+      "properties": {
+        "canonicalisationScheme": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "sha512": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{128}$"
+        }
+      },
+      "required": [
+        "sha256",
+        "sha512"
+      ]
+    },
+    "verificationStatus": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "masterReference",
+    "manifestId",
+    "issuer",
+    "evidenceType",
+    "cryptographicPayload"
+  ]
+}
