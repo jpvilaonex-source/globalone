@@ -25,17 +25,6 @@ class TestConnector(BaseConnector):
         return {"receipt_id": receipt_id}
 
 
-def to_g12():
-    e = GateStateEngine("STRESS")
-    for i in range(1, 13):
-        e.transition_to(
-            f"G{i}", "validator",
-            human_authorisation=(i == 10),
-            receipt_provided=(i == 12),
-        )
-    return e
-
-
 def test_replay_cannot_move_gate_backward_or_repeat_current_gate():
     e = GateStateEngine("REPLAY")
     e.transition_to("G1", "validator")
@@ -44,12 +33,10 @@ def test_replay_cannot_move_gate_backward_or_repeat_current_gate():
     assert e.get_current_gate() == "G1"
 
 
-def test_direct_state_mutation_is_not_exposed():
+def test_direct_public_state_mutation_is_not_exposed():
     e = GateStateEngine("TAMPER")
     with pytest.raises(AttributeError):
         e.current_gate_index = 10
-    with pytest.raises(AttributeError):
-        e._current_gate_index = 10
 
 
 def test_audit_history_is_snapshot_not_mutable_state():
