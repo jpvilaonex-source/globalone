@@ -1,0 +1,46 @@
+{
+  "masterReference": "1251254",
+  "systemName": "LLM BRIDGE",
+  "architectureEngine": "UNIVERSAL 20-GATE EVIDENCE ENGINE",
+  "buildVersion": "2026.10.01-BUILD-01",
+  "jurisdictionalScope": [
+    "AU-WA",
+    "AU-CTH"
+  ],
+  "governingControlInvariants": {
+    "noSelfAuthentication": true,
+    "noFactElevation": true,
+    "noSimulation": true,
+    "noRetroactiveGateBypass": true
+  },
+  "operationalGateEnforcement": {
+    "intakeGate": "G0",
+    "identityGate": "G1",
+    "authorityGate": "G2",
+    "jurisdictionGate": "G3",
+    "ruleMappingGate": "G4",
+    "documentIntegrityGate": "G5",
+    "executionGate": "G6",
+    "signatureWitnessGate": "G7",
+    "cryptographicIntegrityGate": "G8",
+    "complianceGate": "G9",
+    "humanReleaseGate": "G10",
+    "externalSubmissionGate": "G11",
+    "externalReceiptGate": "G12",
+    "primaryEvidenceGate": "G13",
+    "authenticityGate": "G14",
+    "reconciliationGate": "G15",
+    "verificationGate": "G16",
+    "enforcementGate": "G17",
+    "closureGate": "G18",
+    "wormArchiveGate": "G19"
+  },
+  "operationalStatus": {
+    "control": "BOUND",
+    "architecture": "ACTIVE",
+    "enforcement": "FULL",
+    "externalLegalStatus": "NOT_ASSERTED",
+    "primaryEvidence": "PENDING",
+    "deterministicStatus": "COMPLIANCE_CHECK_PASSED_EXTERNAL_LEGAL_STATUS_PENDING_PRIMARY_EVIDENCE"
+  }
+}
