@@ -1,6 +1,5 @@
 import json
-
-def canonicalize(payload: dict) -> bytes:
-    # Deterministic JSON serialization. This is not claimed as full RFC 8785
-    # interoperability until the implementation is validated against JCS vectors.
-    return json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+from typing import Any
+def canonicalize(payload: dict[str,Any])->bytes:
+    """Deterministic JSON encoding; full RFC 8785 conformance is not asserted."""
+    return json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(",",":"),allow_nan=False).encode("utf-8")
